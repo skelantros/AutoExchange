@@ -14,9 +14,12 @@ object MarkupParser {
     }
 
   private val fileNameRegex = "(.+)\\.(.+)".r
+  private val baseFileNameRegex = "_(.+)\\.(.+)".r
   def fromFile(file: File): AvroClass = {
-    val fileNameRegex(name, _) = file.getName
-    val isRequired = name.startsWith("_")
+    val (name, isRequired) = file.getName match {
+      case baseFileNameRegex(name, _) => (name, true)
+      case fileNameRegex(name, _) => (name, false)
+    }
 
     val src = io.Source.fromFile(file)
     val fieldsStrs = try {
