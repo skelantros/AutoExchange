@@ -26,3 +26,6 @@ lazy val flumeMaker = (project in file("flume_maker"))
   .settings(
     name := "Flume Builder"
   )
+
+lazy val sandbox = (project in file("sandbox"))
+  .dependsOn(baseProject, schemaBuilder, importMaker, flumeMaker)
