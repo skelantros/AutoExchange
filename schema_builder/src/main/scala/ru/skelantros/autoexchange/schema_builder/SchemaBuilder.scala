@@ -2,6 +2,7 @@ package ru.skelantros.autoexchange.schema_builder
 
 import ru.skelantros.autoexchange.base.Field
 
+// Строит AVRO-схему на основе объекта AvroClass
 object SchemaBuilder {
   private def padString(str: String, reqLength: Int): String =
     str + (" " * (reqLength - str.length))

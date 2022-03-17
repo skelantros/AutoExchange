@@ -4,7 +4,8 @@ import java.io.{File, FileWriter}
 
 import ru.skelantros.autoexchange.base.{AvroClass, MarkupParser}
 
-object SchemaBuilderMain extends App {
+// Строит AVRO-схемы из всех файлов в папке, построенных с помощью кастомной разметки
+object MarkupSchemaBuilderMain extends App {
   if(args.length < 3) {
     println("usage: SchemaBuilderMain (input directory) (output directory) (namespace)")
     System.exit(0)

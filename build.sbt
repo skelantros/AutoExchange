@@ -10,7 +10,7 @@ lazy val baseProject = (project in file("base"))
   )
 
 lazy val schemaBuilder = (project in file("schema_builder"))
-  .dependsOn(baseProject)
+  .dependsOn(baseProject, markupParser)
   .settings(
     name := "Schema Builder"
   )
@@ -29,3 +29,10 @@ lazy val flumeMaker = (project in file("flume_maker"))
 
 lazy val sandbox = (project in file("sandbox"))
   .dependsOn(baseProject, schemaBuilder, importMaker, flumeMaker)
+
+lazy val markupParser = (project in file("markup_parser"))
+  .dependsOn(baseProject)
+  .settings(
+    name := "Avro Class Parser",
+    libraryDependencies += "com.univocity" % "univocity-parsers" % "2.9.1"
+  )
