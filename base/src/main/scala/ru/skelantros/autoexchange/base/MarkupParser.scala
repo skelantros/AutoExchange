@@ -4,7 +4,7 @@ import java.io.{File, FileReader}
 
 object MarkupParser {
   private val fieldRegex =
-    """(\w+)\t(\w+)\t(01|11|0\*|1\*)\t(\w*)\t([^\t]*)""".r
+    """^\"?[\s\xa0]*(\w+)[\s\xa0]*\t[\s\xa0]*(\w+)[\s\xa0]*\t[\s\xa0]*(01|11|0\*|1\*)[\s\xa0]*\t(\w*)\t([^\t]*?)\"?$""".r
 
   type Markup = Seq[Field]
   def apply(strs: Seq[String]): Markup =
@@ -23,7 +23,7 @@ object MarkupParser {
 
     val src = io.Source.fromFile(file)
     val fieldsStrs = try {
-      src.getLines().toSeq
+      src.getLines().toList
     } finally { src.close() }
 
     AvroClass(name, MarkupParser(fieldsStrs), isRequired)

@@ -27,5 +27,5 @@ object SchemaBuilderMain extends App {
   }
 
   for(AvroClass(name, fields, _) <- avroClasses)
-    writeToFile(SchemaBuilder(name, namespace, fields), new File(outputDir, name))
+    writeToFile(SchemaBuilder(name, namespace, fields), new File(outputDir, name + ".avsc"))
 }
