@@ -40,6 +40,7 @@ object ConfluenceAvroClassParser extends AvroClassParser {
   private def typeIdx(header: TsvRow): Int = header.indexWhere(_.toLowerCase.contains("тип"))
   private def relationIdx(header: TsvRow): Int = header.indexWhere(_.toLowerCase.contains("кратность"))
   private def descIdx(header: TsvRow): Int = header.indexWhere(_.toLowerCase.contains("Описание атрибута (из BRD)".toLowerCase))
+  private def jsonIdx(header: TsvRow): Int = header.indexWhere(_.toLowerCase.contains("json"))
 
   // функции, достающие данные из TSV
   private def nameOf(row: TsvRow, config: HeaderConfig): String =
@@ -54,16 +55,19 @@ object ConfluenceAvroClassParser extends AvroClassParser {
     case _ => throw new Exception(s"Wrong relation type in file ${config.fileName}, field name: ${nameOf(row, config)}")
   }
   private def descOf(row: TsvRow, config: HeaderConfig): String = strFromTsv(row(config.descIdx))
+  private def jsonOf(row: TsvRow, config: HeaderConfig): Option[String] =
+    Option(row(config.jsonIdx)).map(strFromTsv).filter(_.nonEmpty)
 
   // вспомогательный кейс-класс, хранящий информацию о таблице
-  private case class HeaderConfig(nameIdx: Int, typeIdx: Int, relationIdx: Int, descIdx: Int, fileName: String)
+  private case class HeaderConfig(nameIdx: Int, typeIdx: Int, relationIdx: Int, descIdx: Int, fileName: String, jsonIdx: Int)
   private object HeaderConfig {
     def apply(fileName: String, header: TsvRow): HeaderConfig = HeaderConfig(
       nameIdx(header),
       typeIdx(header),
       relationIdx(header),
       descIdx(header),
-      fileName
+      fileName,
+      jsonIdx(header)
     )
   }
   private val fileNameRegex = "(.+)\\.(.+)".r
@@ -85,7 +89,7 @@ object ConfluenceAvroClassParser extends AvroClassParser {
     val headerConfig = HeaderConfig(file.getName, tsvParsed.head)
 
     val fields = tsvParsed.tail.map { row =>
-      Field(nameOf(row, headerConfig), typeOf(row, headerConfig), relationOf(row, headerConfig), descOf(row, headerConfig), None)
+      Field(nameOf(row, headerConfig), typeOf(row, headerConfig), relationOf(row, headerConfig), descOf(row, headerConfig), None, jsonOf(row, headerConfig))
     }
 
     AvroClass(name, fields.toVector, isRequired)

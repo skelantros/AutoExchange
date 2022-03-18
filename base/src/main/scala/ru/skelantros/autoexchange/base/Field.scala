@@ -1,6 +1,6 @@
 package ru.skelantros.autoexchange.base
 
-case class Field(name: String, typ: Field.Type, relation: Relation, doc: String, default: Option[String]) {
+case class Field(name: String, typ: Field.Type, relation: Relation, doc: String, default: Option[String], json: Option[String] = None) {
   import Relation._
 
   lazy val typeInSchema: String = relation match {
