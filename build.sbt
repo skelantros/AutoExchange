@@ -36,3 +36,9 @@ lazy val markupParser = (project in file("markup_parser"))
     name := "Avro Class Parser",
     libraryDependencies += "com.univocity" % "univocity-parsers" % "2.9.1"
   )
+
+lazy val jsonMaker = (project in file("json_maker"))
+  .dependsOn(baseProject, markupParser)
+  .settings(
+    name := "JSON Model Maker"
+  )
