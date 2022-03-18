@@ -89,7 +89,9 @@ object ConfluenceAvroClassParser extends AvroClassParser {
     val headerConfig = HeaderConfig(file.getName, tsvParsed.head)
 
     val fields = tsvParsed.tail.map { row =>
-      Field(nameOf(row, headerConfig), typeOf(row, headerConfig), relationOf(row, headerConfig), descOf(row, headerConfig), None, jsonOf(row, headerConfig))
+      val name = nameOf(row, headerConfig)
+      val defValue = defaultValue(name)
+      Field(name, typeOf(row, headerConfig), relationOf(row, headerConfig), descOf(row, headerConfig), defValue, jsonOf(row, headerConfig))
     }
 
     AvroClass(name, fields.toVector, isRequired)

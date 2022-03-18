@@ -2,7 +2,6 @@ package ru.skelantros.autoexchange.json_maker
 
 import java.io.{File, FileWriter}
 
-import ru.skelantros.autoexchange.base.{AvroClass, MarkupParser}
 import ru.skelantros.autoexchange.markup_parser.ConfluenceAvroClassParser
 
 object JsonMakerMain extends App {
