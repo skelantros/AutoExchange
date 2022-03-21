@@ -7,7 +7,7 @@ case class Field(name: String, typ: Field.Type, relation: Relation, doc: String,
     case OptArray =>
       s"""[\"null\", {\"type\": \"array\", \"items\": \"$typ\", \"default\": []}]"""
     case ReqArray =>
-      s"""[{\"type\": \"array\", \"items\": \"$typ\", \"default\": []}]"""
+      s"""{\"type\": \"array\", \"items\": \"$typ\", \"default\": []}"""
     case Opt =>
       s"""[\"null\", \"$typ\"]"""
     case Req => s"""\"$typ\""""

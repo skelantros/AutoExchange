@@ -94,6 +94,6 @@ object ConfluenceAvroClassParser extends AvroClassParser {
       Field(name, typeOf(row, headerConfig), relationOf(row, headerConfig), descOf(row, headerConfig), defValue, jsonOf(row, headerConfig))
     }
 
-    AvroClass(name, fields.toVector, isRequired)
+    AvroClass(name, fields.filter(isFieldPresent).toVector, isRequired)
   }
 }
