@@ -30,9 +30,11 @@ object ConfluenceAvroClassParser extends AvroClassParser {
 
   private val strRegex = """"(.*)"""".r
   // Эта функция "обрабатывает" строку из TSV: заменяет символ новой строки на текст и экранирует кавычку (для записи в AVRO)
-  def strFromTsv(str: String): String = {
-    val strRegex(res) = str.replace("\n", "\\n")
-    res.replace("\"", "\\\"")
+  def strFromTsv(str: String): String = Option(str) match {
+    case Some(x) =>
+      val strRegex(res) = x.replace("\n", "\\n")
+      res.replace ("\"", "\\\"")
+    case None => ""
   }
 
   // поиск номеров столбцов, которые задают информацию о названии поля, его типе, кратности и описании
